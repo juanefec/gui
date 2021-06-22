@@ -1,11 +1,11 @@
-# faiface/gui [![GoDoc](https://godoc.org/github.com/faiface/gui?status.svg)](https://godoc.org/github.com/faiface/gui) [![Discord](https://img.shields.io/badge/chat-on%20discord-9cf.svg)](https://discord.gg/T5YAAT2)
+# juanefec/gui [![GoDoc](https://godoc.org/github.com/juanefec/gui?status.svg)](https://godoc.org/github.com/juanefec/gui) [![Discord](https://img.shields.io/badge/chat-on%20discord-9cf.svg)](https://discord.gg/T5YAAT2)
 
 Super minimal, rock-solid foundation for concurrent GUI in Go.
 
 ## Installation
 
 ```
-go get -u github.com/faiface/gui
+go get -u github.com/juanefec/gui
 ```
 
 Currently uses [GLFW](https://www.glfw.org/) under the hood, so have [these dependencies](https://github.com/go-gl/glfw#installation).
@@ -55,7 +55,7 @@ Why the hell has no one made a concurrent GUI in Go yet? I have no idea. Go is a
 
 The main idea is that different components of the GUI (buttons, text fields, ...) run concurrently and communicate using channels. Furthermore, they receive events from an object called _environment_ and can draw by sending draw commands to it.
 
-Here's [`Env`](https://godoc.org/github.com/faiface/gui#Env0), short for environment:
+Here's [`Env`](https://godoc.org/github.com/juanefec/gui#Env0), short for environment:
 
 ```go
 type Env interface {
@@ -74,14 +74,14 @@ If you're not familiar with the `"image"` and the `"image/draw"` packages, go re
 
 ![Draw](images/draw.png)
 
-Yes, `faiface/gui` uses CPU for drawing. You won't make AAA games with it, but the performance is enough for most GUI apps. The benefits are outstanding, though:
+Yes, `juanefec/gui` uses CPU for drawing. You won't make AAA games with it, but the performance is enough for most GUI apps. The benefits are outstanding, though:
 
 1. Drawing is as simple as changing pixels.
 2. No FPS (frames per second), results are immediately on the screen.
 3. No need to organize the API around a GPU library, like OpenGL.
 4. Use all the good packages, like [`"image"`](https://golang.org/pkg/image/), [`"image/draw"`](https://golang.org/pkg/image/draw/), [`"golang.org/x/image/font"`](https://godoc.org/golang.org/x/image/font) for fonts, or [`"github.com/fogleman/gg"`](https://godoc.org/github.com/fogleman/gg) for shapes.
 
-What is an [`Event`](https://godoc.org/github.com/faiface/gui#Event)? It's an interface:
+What is an [`Event`](https://godoc.org/github.com/juanefec/gui#Event)? It's an interface:
 
 ```go
 type Event interface {
@@ -91,7 +91,7 @@ type Event interface {
 
 This purpose of this interface is to hold different kinds of events and be able to discriminate among them using a type switch.
 
-Examples of concrete `Event` types are: [`gui.Resize`](https://godoc.org/github.com/faiface/gui#Resize), [`win.WiClose`](https://godoc.org/github.com/faiface/gui/win#WiClose), [`win.MoDown`](https://godoc.org/github.com/faiface/gui/win#MoDown), [`win.KbType`](https://godoc.org/github.com/faiface/gui/win#KbType) (where `Wi`, `Mo`, and `Kb` stand for _window_, _mouse_, and _keyboard_, respectively). When we have an `Event`, we can type switch on it like this:
+Examples of concrete `Event` types are: [`gui.Resize`](https://godoc.org/github.com/juanefec/gui#Resize), [`win.WiClose`](https://godoc.org/github.com/juanefec/gui/win#WiClose), [`win.MoDown`](https://godoc.org/github.com/juanefec/gui/win#MoDown), [`win.KbType`](https://godoc.org/github.com/juanefec/gui/win#KbType) (where `Wi`, `Mo`, and `Kb` stand for _window_, _mouse_, and _keyboard_, respectively). When we have an `Event`, we can type switch on it like this:
 
 ```go
 switch event := event.(type) {
@@ -120,16 +120,16 @@ case win.KbRepeat:
 
 This shows all the possible events that a window can produce.
 
-The [`gui.Resize`](https://godoc.org/github.com/faiface/gui#Resize) event is not from the package [`win`](https://godoc.org/github.com/faiface/gui/win) because it's not window specific. In fact, every `Env` guarantees to produce `gui.Resize` as its first event.
+The [`gui.Resize`](https://godoc.org/github.com/juanefec/gui#Resize) event is not from the package [`win`](https://godoc.org/github.com/juanefec/gui/win) because it's not window specific. In fact, every `Env` guarantees to produce `gui.Resize` as its first event.
 
-How do we create a window? With the [`"github.com/faiface/gui/win"`](https://godoc.org/github.com/faiface/gui/win) package:
+How do we create a window? With the [`"github.com/juanefec/gui/win"`](https://godoc.org/github.com/juanefec/gui/win) package:
 
 ```go
-// import "github.com/faiface/gui/win"
-w, err := win.New(win.Title("faiface/win"), win.Size(800, 600), win.Resizable())
+// import "github.com/juanefec/gui/win"
+w, err := win.New(win.Title("juanefec/win"), win.Size(800, 600), win.Resizable())
 ```
 
-The [`win.New`](https://godoc.org/github.com/faiface/gui/win#New) constructor uses the [functional options pattern](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis) by Dave Cheney. Unsurprisingly, the returned [`*win.Win`](https://godoc.org/github.com/faiface/gui/win#Win) is an `Env`.
+The [`win.New`](https://godoc.org/github.com/juanefec/gui/win#New) constructor uses the [functional options pattern](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis) by Dave Cheney. Unsurprisingly, the returned [`*win.Win`](https://godoc.org/github.com/juanefec/gui/win#Win) is an `Env`.
 
 Due to stupid limitations imposed by operating systems, the internal code that fetches events from the OS must run on the main thread of the program. To ensure this, we need to call [`mainthread.Run`](https://godoc.org/github.com/faiface/mainthread#Run) in the `main` function:
 
@@ -154,12 +154,12 @@ import (
 	"image"
 	"image/draw"
 
-	"github.com/faiface/gui/win"
+	"github.com/juanefec/gui/win"
 	"github.com/faiface/mainthread"
 )
 
 func run() {
-	w, err := win.New(win.Title("faiface/gui"), win.Size(800, 600))
+	w, err := win.New(win.Title("juanefec/gui"), win.Size(800, 600))
 	if err != nil {
 		panic(err)
 	}
@@ -191,13 +191,13 @@ That's where multiplexing, or muxing comes in.
 
 ![Mux](images/mux.png)
 
-A [`Mux`](https://godoc.org/github.com/faiface/gui#Mux) basically lets you split a single `Env` into multiple ones.
+A [`Mux`](https://godoc.org/github.com/juanefec/gui#Mux) basically lets you split a single `Env` into multiple ones.
 
 When the original `Env` produces an event, `Mux` sends it to each one of the multiple `Env`s.
 
 When any one of the multiple `Env`s receives a draw function, `Mux` sends it to the original `Env`.
 
-To mux an `Env`, use [`gui.NewMux`](https://godoc.org/github.com/faiface/gui#NewMux):
+To mux an `Env`, use [`gui.NewMux`](https://godoc.org/github.com/juanefec/gui#NewMux):
 
 ```go
 mux, env := gui.NewMux(w)
@@ -209,7 +209,7 @@ What's that second return value? That's the _master `Env`_. It's the first envir
 
 Don't use the original `Env` after muxing it. The `Mux` is using it and you'll steal its events at best.
 
-To create more `Env`s, we can use [`mux.MakeEnv()`](https://godoc.org/github.com/faiface/gui#Mux.MakeEnv):
+To create more `Env`s, we can use [`mux.MakeEnv()`](https://godoc.org/github.com/juanefec/gui#Mux.MakeEnv):
 
 For example, here's a simple program that shows four white rectangles on the screen. Whenever the user clicks on any of them, the rectangle blinks (switches between white and black) 3 times. We use `Mux` to send events to all of the rectangles independently:
 
@@ -221,8 +221,8 @@ import (
 	"image/draw"
 	"time"
 
-	"github.com/faiface/gui"
-	"github.com/faiface/gui/win"
+	"github.com/juanefec/gui"
+	"github.com/juanefec/gui/win"
 	"github.com/faiface/mainthread"
 )
 
@@ -262,7 +262,7 @@ func Blinker(env gui.Env, r image.Rectangle) {
 }
 
 func run() {
-	w, err := win.New(win.Title("faiface/gui"), win.Size(800, 600))
+	w, err := win.New(win.Title("juanefec/gui"), win.Size(800, 600))
 	if err != nil {
 		panic(err)
 	}
@@ -297,7 +297,7 @@ They won't, because the channels of events have unlimited capacity and never blo
 
 ![Events](images/events.png)
 
-And that's basically all you need to know about `faiface/gui`! Happy hacking!
+And that's basically all you need to know about `juanefec/gui`! Happy hacking!
 
 ## A note on race conditions
 

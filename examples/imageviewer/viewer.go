@@ -5,7 +5,7 @@ import (
 	"image/draw"
 	"os"
 
-	"github.com/faiface/gui"
+	"github.com/juanefec/gui"
 
 	_ "image/gif"
 	_ "image/jpeg"

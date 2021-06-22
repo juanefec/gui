@@ -8,9 +8,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/faiface/gui"
-	"github.com/faiface/gui/win"
 	"github.com/faiface/mainthread"
+	"github.com/juanefec/gui"
+	"github.com/juanefec/gui/win"
 )
 
 func EqualColors(c1, c2 color.Color) bool {

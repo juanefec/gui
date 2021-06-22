@@ -5,10 +5,10 @@ import (
 	"image/color"
 	"image/draw"
 
-	"github.com/faiface/gui"
-	"github.com/faiface/gui/win"
 	"github.com/faiface/mainthread"
 	"github.com/fogleman/gg"
+	"github.com/juanefec/gui"
+	"github.com/juanefec/gui/win"
 )
 
 func ColorPicker(env gui.Env, pick chan<- color.Color, r image.Rectangle, clr color.Color) {
