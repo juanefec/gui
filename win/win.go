@@ -22,12 +22,20 @@ type options struct {
 	resizable     bool
 	borderless    bool
 	maximized     bool
+	icon          []image.Image
 }
 
 // Title option sets the title (caption) of the window.
 func Title(title string) Option {
 	return func(o *options) {
 		o.title = title
+	}
+}
+
+// Title option sets the title (caption) of the window.
+func Icon(icon []image.Image) Option {
+	return func(o *options) {
+		o.icon = icon
 	}
 }
 
@@ -142,9 +150,13 @@ func makeGLFWWin(o *options) (*glfw.Window, error) {
 	if o.maximized {
 		glfw.WindowHint(glfw.Maximized, glfw.True)
 	}
+
 	w, err := glfw.CreateWindow(o.width, o.height, o.title, nil, nil)
 	if err != nil {
 		return nil, err
+	}
+	if len(o.icon) > 0 {
+		w.SetIcon(o.icon)
 	}
 	if o.maximized {
 		o.width, o.height = w.GetFramebufferSize() // set o.width and o.height to the window size due to the window being maximized

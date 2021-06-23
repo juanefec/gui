@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"encoding/base64"
+	"image"
+	"image/png"
 	"os/user"
 
 	"github.com/faiface/mainthread"
@@ -26,7 +30,17 @@ func run() {
 		ButtonDown: colornames.Grey,
 	}
 
-	w, err := win.New(win.Title("Image Viewer"), win.Size(900, 600), win.Resizable())
+	icon := "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAPxJREFUWIXtlzkSwjAMRc1ymCQlPSehZOg4DW0GrsNQMTTAbaAAJx5H1pe8NfC7LOg9yRkSG/PrmVXmvXz2sgJoyLb/nD7uxr5zCExgFiSJViAJphFgR5gzrsBQPRfo/niarm3EAlk79OEhmbm0mPaaBC4W4MbYtQ0riH4vEkBB68wFClDdoY4190IBqjvJ2C0cTSd6CajCvpRkaYICmjHb+2OeBfKfMFSMgyD44rSSC8RCONhtsx4PzldeQBMIA1EJpMJUAiVgUMCFloBBgVpQN1neBSkp9VFK5rI/1BGgQN9MtgHJAgGYeL+hEkiFiQU0I0yNW3CybfqnRt6Qs2CdXlIOlAAAAABJRU5ErkJggg=="
+	bicons, err := base64.StdEncoding.DecodeString(icon)
+	if err != nil {
+		panic(err)
+	}
+	ic, err := png.Decode(bytes.NewReader(bicons))
+	if err != nil {
+		panic(err)
+	}
+
+	w, err := win.New(win.Title("Image Viewer"), win.Size(900, 600), win.Resizable(), win.Icon([]image.Image{ic}))
 	if err != nil {
 		panic(err)
 	}
